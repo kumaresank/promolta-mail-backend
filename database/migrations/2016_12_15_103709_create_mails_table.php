@@ -15,7 +15,7 @@ class CreateMailsTable extends Migration
         Schema::create('mails', function (Blueprint $table) {
             $table->increments('id');
             $table->string('subject');
-            $table->string('body');
+            $table->longText('body');
             $table->string('attachment');
             $table->timestamps()->default(DB::raw('CURRENT_TIMESTAMP'));
         });

@@ -4,7 +4,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function()
+Route::group(['prefix' => 'api','middleware' => 'cors'], function()
 {
     Route::post('authenticate', 'AuthenticateController@authenticate');
     Route::post('compose', 'MailController@compose');

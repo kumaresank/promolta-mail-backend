@@ -20,9 +20,13 @@ public function __construct()
 
     public function compose(Request $request)
     {
-        $attachment = $request->file('attachment');
-        $attachment->move('uploads',$attachment->getClientOriginalName());
-        $id = DB::table('mails')->insert([ 'subject' => $request->subject,'body'=>$request->body,'attachment'=>$attachment->getClientOriginalName()]);
+        $filename ='';
+        if($request->file('attachment')){
+            $attachment = $request->file('attachment');
+            $attachment->move('uploads',$attachment->getClientOriginalName());
+            $filename = $attachment->getClientOriginalName();
+        }
+        $id = DB::table('mails')->insertGetId([ 'subject' => $request->subject,'body'=>$request->body,'attachment'=>$filename]);
         DB::table('inbox')->insert(['from'=> Auth::User()->email,'to' => $request->to,'mail_id'=>$id,'is_read'=>false]);
         return response()->json(['success'=>true,'msg'=>'Mail Sent']);
     }
